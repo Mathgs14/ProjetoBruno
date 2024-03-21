@@ -1,41 +1,17 @@
-'use strict'
+// Importando a biblioteca mongoose
+const mongoose = require('mongoose')
 
-const express = require('express')
-const clienteRouter = express.Router()
-const clienteController = require('../controllers/clienteController')
+// Importando o Schema do mongoose
+const Schema = mongoose.Schema
 
-
-clienteRouter.route('/api/cliente')
-//roteador somente roteia(obvio) quem resolver é o controller
-//o roteador vai pegar os parametros passados > jogar para os controladores, ai sim vai ser resolvido o metodo
-.get((req, res) =>{
-    clienteController.getClientes(req,res)
-  
+// Definindo o esquema da venda
+const vendaSchema = new Schema({
+    name: { type: String, required: true }, // Nome do item vendido (obrigatório)
+    id: { type: Number, required: true, unique: true }, // ID único da venda (obrigatório e único)
+    price: { type: Number, required: true }, // Preço do item vendido (obrigatório)
+    paid: { type: Number, required: true }, // Valor pago pelo item vendido (obrigatório)
+    typeBuy: String // Tipo de compra (opcional)
 })
 
-.post((req,res) =>{
-    clienteController.createCliente(req,res)
-  
-})
-
-.put((req,res)=>{
-    clienteController.updateCliente(req,res)
- 
-})
-clienteRouter.route('/api/cliente/:id')
-.get((req,res)=>{
-    clienteController.getCliente(req,res)
-})
-.delete((req,res)=>{
-    clienteController.deleteClientesById(req,res)
-})
-module.exports = clienteRouter
-
-
-
-
-
-
-
-
-
+// Criando um modelo a partir do esquema definido, chamando-o de "vendaModel"
+module.exports = mongoose.model("vendaModel", vendaSchema)
